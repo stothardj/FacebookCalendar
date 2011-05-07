@@ -146,6 +146,22 @@ border: 1px solid #006; \
 background-color: #6D84B4; \
 color: white; \
 } \
+#eventsList { \
+	position: absolute; \
+	border: 1px solid #333; \
+	background-color: #FFFFFF; \
+	padding: 2px 6px; \
+} \
+#eventsList dt { \
+	font-family: "Lucida Grande",Tahoma,Verdana,Arial,sans-serif; \
+	font-size: 75%; \
+	color: #627aad; \
+} \
+#eventsList dd { \
+	font-family: "Lucida Grande",Tahoma,Verdana,Arial,sans-serif; \
+	font-size: 70%; \
+	color: black; \
+} \
 </style>'
 );
 
@@ -274,6 +290,8 @@ Calendar.prototype.updateDisplay = function() {
 		}
 	    else
 		unsafeWindow.console.log( 'window events still not set' );
+
+	    setHover();
 
 	    calendarDay.setAttribute("id",calendarDayId);
 
@@ -589,3 +607,23 @@ $('.dayCell').click(function(e){
 
     }
 });
+
+function setHover() {
+	$('.boldedCell').hover(function(e) {
+	
+		var calendarDayId = $(this).attr('id');
+		var eventsList = '<dl id="eventsList">';
+		for( evi in window.userEvents ) {
+		    ev = window.userEvents[evi];
+		    if( ev.date_key == calendarDayId ) {
+				eventsList += ('<dt><a href="http://www.facebook.com/event.php?eid='+ev.eid+'">'+ev.name+"</a></dt>");
+				eventsList += ("<dd>"+((ev.start_date.getHours()%12)+1).toString()+":"+zeroPad(ev.start_date.getMinutes().toString(),2)+"</dd>");
+		    }
+		}
+		eventsList += "</dl>";
+		$(eventsList).appendTo(this).css('top',(e.pageY - 10) + 'px').css('left', (e.pageX + 10) + 'px').fadeIn('slow');
+	}, function() {
+		// Hover out code
+		$('#eventsList').remove();
+	});
+}
