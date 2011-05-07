@@ -20,6 +20,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// unsafeWindow.console.log( "Pagelet: " + document.getElementById('pagelet_eventbox') );
+
+if( document.getElementById('pagelet_eventbox') != null ) {
+
+unsafeWindow.console.log(document);
+
+// Given a number, num, it returns a string with num and count padded leading zeros
+window.zeroPad = function(num,count) {
+    var numZeropad = num.toString();
+    while(numZeropad.length < count) {
+	numZeropad = "0" + numZeropad;
+    }
+    return numZeropad;
+}
 
 // Load facebook api
 var script = document.createElement('script');
@@ -212,6 +226,7 @@ function Calendar() {
 }
 
 Calendar.prototype.generateDayHtml = function() {
+    unsafeWindow.console.log('HTml generated');
     var indexOfFirstDay = (new Date(this.displayYear, this.displayMonth, 1)).getDay();
     // Variables that store the previous/next month's date information
     var prevMonth = (this.displayMonth == 0) ? 11 : (this.displayMonth - 1);
@@ -232,26 +247,18 @@ Calendar.prototype.generateDayHtml = function() {
 	running += '<tr id=calendarRow'+week+'>';
 	for(var day in daysOfWeek) {
 	    // Set the ID for the current calendar day
-	    if(monthStage == 0)
-		calendarDayId = zeroPad((prevMonth + 1), 2) + zeroPad(calendarIndex, 2) + zeroPad(yearPrevMonth,4);
-	    else if(monthStage == 1)
-		calendarDayId = zeroPad((this.displayMonth + 1), 2) + zeroPad(calendarIndex, 2) + zeroPad(this.displayYear,4);
-	    else
-		calendarDayId = zeroPad((nextMonth + 1), 2) + zeroPad(calendarIndex, 2) + zeroPad(yearNextMonth,4);
+	    var calendarDayId;
+	    if(monthStage == 0) {
+		calendarDayId = window.zeroPad((prevMonth + 1), 2);
+		calendarDayId += window.zeroPad(calendarIndex, 2);
+		calendarDayId += window.zeroPad(yearPrevMonth,4);
+	    } else if(monthStage == 1) {
+		calendarDayId = window.zeroPad((this.displayMonth + 1), 2) + window.zeroPad(calendarIndex, 2) + window.zeroPad(this.displayYear,4);
+	    } else {
+		calendarDayId = window.zeroPad((nextMonth + 1), 2) + window.zeroPad(calendarIndex, 2) + window.zeroPad(yearNextMonth,4);
+	    }
 
-	    var bolded = false;
-	    if( window.userEvents != undefined )
-		for( evi in window.userEvents ) {
-		    ev = window.userEvents[evi];
-		    if( ev.date_key == calendarDayId ) {
-			bolded = true;
-			break;
-		    }
-		}
-	    
 	    running += '<td id="' + calendarDayId + '" class="dayCell';
-	    if(bolded)
-		running += ' boldedCell';
 	    running += '">' + calendarIndex.toString() + '</td>';
 
 	    calendarIndex++;
@@ -265,6 +272,8 @@ Calendar.prototype.generateDayHtml = function() {
 	}
 	running += '</tr>';
     }
+
+    unsafeWindow.console.log('Finished generating html');
 
     return running;
 }
@@ -302,11 +311,11 @@ Calendar.prototype.updateDisplay = function() {
 	    
 	    // Set the ID for the current calendar day
 	    if(monthStage == 0)
-		calendarDayId = zeroPad((prevMonth + 1), 2) + zeroPad(calendarIndex, 2) + zeroPad(yearPrevMonth,4);
+		calendarDayId = window.zeroPad((prevMonth + 1), 2) + window.zeroPad(calendarIndex, 2) + window.zeroPad(yearPrevMonth,4);
 	    else if(monthStage == 1)
-		calendarDayId = zeroPad((this.displayMonth + 1), 2) + zeroPad(calendarIndex, 2) + zeroPad(this.displayYear,4);
+		calendarDayId = window.zeroPad((this.displayMonth + 1), 2) + window.zeroPad(calendarIndex, 2) + window.zeroPad(this.displayYear,4);
 	    else
-		calendarDayId = zeroPad((nextMonth + 1), 2) + zeroPad(calendarIndex, 2) + zeroPad(yearNextMonth,4);
+		calendarDayId = window.zeroPad((nextMonth + 1), 2) + window.zeroPad(calendarIndex, 2) + window.zeroPad(yearNextMonth,4);
 
 	    var bolded = false;
 	    if( window.userEvents != undefined )
@@ -389,14 +398,6 @@ $('#calendarTable').wrap('<div id="facebook_calendar" />');
 $("#prevMonth").click(window.calendar.prevMonth.bind(window.calendar));
 $("#nextMonth").click(window.calendar.nextMonth.bind(window.calendar));
 
-// Given a number, num, it returns a string with num and count padded leading zeros
-function zeroPad(num,count) {
-    var numZeropad = num.toString();
-    while(numZeropad.length < count) {
-	numZeropad = "0" + numZeropad;
-    }
-    return numZeropad;
-}
 
 // Load events
 $('#fbScript').load(function() {
@@ -680,3 +681,5 @@ $('body').click(function(event) {
 	    $('.tooltip').remove();
     }
 });
+
+}
