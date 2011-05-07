@@ -20,7 +20,7 @@ $('body').append('<div id="fb-root"></div>');
 
 // Load our stylesheet
 $('head').append(
-    '<style type="text/css"> \
+'<style type="text/css"> \
 #facebook_calendar { \
 color: #000000; \
 border-style: inset; \
@@ -55,7 +55,7 @@ td#monthTitle { \
 text-align: center; \
 } \
 td.boldedCell { \
-font-size: 12pt; \
+font-size: 10pt; \
 font-weight: 900; \
 } \
 td.dayCell { \
