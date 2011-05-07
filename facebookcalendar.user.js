@@ -20,138 +20,138 @@ $('body').append('<div id="fb-root"></div>');
 
 // Load our stylesheet
 $('head').append(
-'<style type="text/css"> \
+    '<style type="text/css"> \
 #facebook_calendar { \
-  color: #000000; \
-  border-style: inset; \
-  border-width: 1px; \
-  border-color: #000000; \
-  padding: 0px; \
-  margin: 0px; \
-  text-align: center; \
+color: #000000; \
+border-style: inset; \
+border-width: 1px; \
+border-color: #000000; \
+padding: 0px; \
+margin: 0px; \
+text-align: center; \
 } \
 table#calendarTable { \
-  margin-left: auto; \
-  margin-right: auto; \
-  width: 100%; \
+margin-left: auto; \
+margin-right: auto; \
+width: 100%; \
 } \
 tr#calendarHead { \
-  color: #FFFFFF; \
-  background-color: #627aad; \
+color: #FFFFFF; \
+background-color: #627aad; \
 } \
 tr#dayRow { \
-  background-color: #F2F2F2; \
+background-color: #F2F2F2; \
 } \
 h1#calendarMonth { \
-  color: #FFFFFF; \
+color: #FFFFFF; \
 } \
 #nextMonth { \
-  text-align: center; \
+text-align: center; \
 } \
 #prevMonth { \
-  text-align: center; \
+text-align: center; \
 } \
 td#monthTitle { \
-  text-align: center; \
+text-align: center; \
 } \
 td.boldedCell { \
-  font-size: 14pt; \
-  font-weight: 900; \
+font-size: 12pt; \
+font-weight: 900; \
 } \
 td.dayCell { \
-  text-align: center; \
-  padding-top: 5px; \
-  padding-bottom: 5px; \
-  padding-left: 10px; \
-  padding-right: 10px; \
+text-align: center; \
+padding-top: 5px; \
+padding-bottom: 5px; \
+padding-left: 10px; \
+padding-right: 10px; \
 } \
 .tooltip { \
-	position: absolute; \
-	border: 1px solid #333; \
-	background-color: #f2f2f2; \
+position: absolute; \
+border: 1px solid #333; \
+background-color: #f2f2f2; \
 } \
 .tooltip h1 { \
-	font-family: "lucida grande",tahoma,verdana,arial,sans-serif; \
-	font-size: 14px; \
-	margin-top: 0px; \
-	margin-left: 0px; \
-	margin-right: 0px; \
-	margin-bottom: 5px; \
-	padding: 5px 5px 5px 5px; \
+font-family: "lucida grande",tahoma,verdana,arial,sans-serif; \
+font-size: 14px; \
+margin-top: 0px; \
+margin-left: 0px; \
+margin-right: 0px; \
+margin-bottom: 5px; \
+padding: 5px 5px 5px 5px; \
 } \
 .time { \
-	margin-top: 20px; \
-	text-align: right; \
-	margin: 6px 4px 10px 1px; \
-	font-family: "lucida grande",tahoma,verdana,arial,sans-serif; \
+margin-top: 20px; \
+text-align: right; \
+margin: 6px 4px 10px 1px; \
+font-family: "lucida grande",tahoma,verdana,arial,sans-serif; \
 } \
 #textArea { \
-	     resize:none; \
+resize:none; \
 } \
 #startDate { \
-	width: 100px; \
+width: 100px; \
 } \
 #endDate { \
-	width: 100px; \
+width: 100px; \
 } \
 .tooltip label{ \
-	display:block; \
-	font-family: "lucida grande",tahoma,verdana,arial,sans-serif; \
-	font-weight:bold; \
-	text-align:right; \
-	width:100px; \
-	margin: 2px 4px 6px 4px; \
-	float:left; \
+display:block; \
+font-family: "lucida grande",tahoma,verdana,arial,sans-serif; \
+font-weight:bold; \
+text-align:right; \
+width:100px; \
+margin: 2px 4px 6px 4px; \
+float:left; \
 } \
 .tooltip input { \
-	float:left; \
-	font-size:12px; \
-	padding:4px 2px; \
-	border:solid 1px #aacfe4; \
-	width:200px; \
-	margin:2px 10px 5px 10px; \
+float:left; \
+font-size:12px; \
+padding:4px 2px; \
+border:solid 1px #aacfe4; \
+width:200px; \
+margin:2px 10px 5px 10px; \
 } \
 .tooltip textarea { \
-	font-family: "lucida grande",tahoma,verdana,arial,sans-serif; \
-	float:left; \
-	font-size:12px; \
-	padding:4px 2px; \
-	border:solid 1px #aacfe4; \
-	width:200px; \
-	margin:0.5px 0 5px 10px; \
+font-family: "lucida grande",tahoma,verdana,arial,sans-serif; \
+float:left; \
+font-size:12px; \
+padding:4px 2px; \
+border:solid 1px #aacfe4; \
+width:200px; \
+margin:0.5px 0 5px 10px; \
 } \
 .tooltip .small{ \
-	color:#666666; \
-	display:block; \
-	font-size:11px; \
-	font-weight:normal; \
-	text-align:right; \
-	width:140px; \
+color:#666666; \
+display:block; \
+font-size:11px; \
+font-weight:normal; \
+text-align:right; \
+width:140px; \
 } \
 .tooltip #createEventButton { \
-	background: none repeat scroll 0 0 transparent; \
-    cursor: pointer; \
-    display: inline-block; \
-    font-family: "Lucida Grande",Tahoma,Verdana,Arial,sans-serif; \
-    font-weight: bold; \
-    outline: medium none; \
-    padding: 1px 0 2px; \
-    white-space: nowrap; \
-	width: 8em; \
-	background-color: #627AAD; \
-	color: white; \
-	border: 1px solid #006; \
+background: none repeat scroll 0 0 transparent; \
+cursor: pointer; \
+display: inline-block; \
+font-family: "Lucida Grande",Tahoma,Verdana,Arial,sans-serif; \
+font-weight: bold; \
+outline: medium none; \
+padding: 1px 0 2px; \
+white-space: nowrap; \
+width: 8em; \
+background-color: #627AAD; \
+color: white; \
+border: 1px solid #006; \
 } \
 .tooltip h1 { \
-	background-color: #6D84B4; \
-	color: white; \
+background-color: #6D84B4; \
+color: white; \
 } \
 </style>'
 );
 
 daysOfWeek = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 monthNames = [ "January", "February", "March", "April", "May", "June",
-"July", "August", "September", "October", "November", "December"];
+	       "July", "August", "September", "October", "November", "December"];
 monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 function Calendar() {
@@ -199,7 +199,7 @@ Calendar.prototype.generateDayHtml = function() {
 			break;
 		    }
 		}
-			
+	    
 	    running += '<td id="' + calendarDayId + '" class="dayCell';
 	    if(bolded)
 		running += ' boldedCell';
@@ -386,9 +386,10 @@ $('#fbScript').load(function() {
 		    ev = window.userEvents[evi];
 		    if(ev.start_time != undefined) {
 			ev.start_date = new Date(ev.start_time * 1000);
-			var day = ev.start_date.getDay() + 1;
+			var day = ev.start_date.getDate();
 			var mon = ev.start_date.getMonth() + 1;
 			var yea = ev.start_date.getFullYear();
+
 			ev.date_key = zeroPad(mon, 2) + zeroPad(day, 2) + zeroPad(yea, 4);
 			unsafeWindow.console.log(ev.date_key);
 		    }
@@ -438,7 +439,7 @@ $('.dayCell').click(function(e){
 	    + '<div id="tipofheader">'
 	    + '<h1>Create an Event</h1>'
 	    + '</div>'
-	    + '<label>Event Name:</label><input type="text" name="eventName" /><br />'
+	    + '<label>Event Name:</label><input type="text" name="eventName" id="eventName"/><br />'
 	    + '<label>Start Time:</label><input type="text" name="startDate" id="startDate" />'
 	    + '<select class=time name="startTime">'
 	    + '<option value="am_1200">12:00 am</option>'
@@ -541,8 +542,8 @@ $('.dayCell').click(function(e){
 	    + '<option value="pm_1100">11:00 pm</option>'
 	    + '<option value="pm_1130">11:30 pm</option>'
 	    + '</select><br />' 
-	    + '<label>Where:</label><input type="text" name="location" /><br />'
-	    + '<label>Description:</label><textarea name="description" cols="40" rows="5" id=textArea></textarea><br />'
+	    + '<label>Where:</label><input type="text" name="location" id="location" /><br />'
+	    + '<label>Description:</label><textarea name="description" cols="40" rows="5" id="textArea"></textarea><br />'
 	    + '<label>&nbsp; </label><input type="submit" value="Create Event" id=createEventButton />'
 	    + '</form>'
 	    + '</div>';
@@ -554,19 +555,38 @@ $('.dayCell').click(function(e){
 	    .fadeIn('slow');
 	
 	
-	
-	
 	$('#createEventButton').click(function() {
-	    alert('button clicked!');
+	    var startDate = $('#startDate').val();
+	    var smonth = startDate.substr(0,2);
+	    var sday = startDate.substr(3,2);
+	    var syear = startDate.substr(6);
+	    var endDate = $('#endDate').val();
+	    var emonth = endDate.substr(0,2);
+	    var eday = endDate.substr(3,2);
+	    var eyear = endDate.substr(6);
+
+	    unsafeWindow.console.log(startDate);
+	    unsafeWindow.console.log(smonth);
+	    unsafeWindow.console.log(sday);
+	    unsafeWindow.console.log(syear);
+	    var startStr = new Date(syear, smonth - 1, sday - 1).getTime()/1000;
+	    var endStr = new Date(eyear, emonth - 1, eday - 1).getTime()/1000;
+	    unsafeWindow.console.log(startStr);
+	    unsafeWindow.console.log(endStr);
+	    unsafeWindow.FB.api('/me/events', 'post', { name: $('#eventName').val(), start_time: startStr, location: $('#location').val(), end_time: endStr, description: $('#textArea').val()}, function(response) {
+		unsafeWindow.console.log(response);
+	    });
+
+
 	});
 
 	unsafeWindow.console.log(e);
 	var defaultDate = e.target.id;
 	unsafeWindow.console.log(defaultDate);
-	var defDate = defaultDate.substr(0,2) + '/' + defaultDate.substr(2,2) + '/' + defaultDate.substr(4);
+	var defDate = defaultDate.substr(0,2) + '/' + defaultDate.substr(2,2)  + '/' + defaultDate.substr(4);
 	unsafeWindow.console.log(defDate);
 	$('#startDate').val(defDate);
 	$('#endDate').val(defDate);
 
-    }	
+    }
 });
