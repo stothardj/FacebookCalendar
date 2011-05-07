@@ -14,13 +14,14 @@ $('head').append(
   border-style: inset; \
   border-width: 1px; \
   border-color: #000000; \
-  padding: 5px; \
-  margin: 5px; \
+  padding: 0px; \
+  margin: 0px; \
   text-align: center; \
 } \
 table#calendarTable { \
   margin-left: auto; \
   margin-right: auto; \
+  width: 100%; \
 } \
 tr#calendarHead { \
   color: #FFFFFF; \
@@ -116,9 +117,8 @@ Calendar.prototype.updateDisplay = function() {
     var nextMonth = (this.displayMonth == 11) ? 0 : (this.displayMonth + 1);
     var yearNextMonth = (this.displayMonth == 11) ? (this.displayYear + 1) : this.displayYear;
     
-    var monthTitle = document.getElementById("monthTitle");
-    if(monthTitle.firstChild.nodeType == 3)
-	monthTitle.firstChild.nodeValue = (monthNames[this.displayMonth] + " " + this.displayYear);
+
+    $('#monthTitle').html('<h1 id="calendarMonth">' + monthNames[window.calendar.displayMonth] + ' ' + window.calendar.displayYear + '</h1>');
     
     var lastMonthLen = getMonthLength(prevMonth, yearPrevMonth);
     var indexOfFirstDay = (new Date(this.displayYear, this.displayMonth, 1)).getDay();
