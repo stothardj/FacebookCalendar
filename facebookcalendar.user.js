@@ -591,9 +591,25 @@ $('.dayCell').click(function(e){
 	    var endStr = new Date(eyear, emonth - 1, eday).getTime()/1000;
 	    unsafeWindow.console.log(startStr);
 	    unsafeWindow.console.log(endStr);
-	    unsafeWindow.FB.api('/me/events', 'post', { name: $('#eventName').val(), start_time: startStr, location: $('#location').val(), end_time: endStr, description: $('#textArea').val()}, function(response) {
+	    var nev = { name: $('#eventName').val(), start_time: startStr, location: $('#location').val(), end_time: endStr, description: $('#textArea').val()};
+
+	    unsafeWindow.FB.api('/me/events', 'post', nev, function(response) {
 		unsafeWindow.console.log(response);
+
+		if( window.userEvents != undefined ) {
+		    nev.start_date = new Date(nev.start_time * 1000);
+		    var day = nev.start_date.getDate();
+		    var mon = nev.start_date.getMonth() + 1;
+		    var yea = nev.start_date.getFullYear();
+		    nev.date_key = zeroPad(mon, 2) + zeroPad(day, 2) + zeroPad(yea, 4);
+		    unsafeWindow.console.log("Response eid is "+response.id);
+		    nev.eid = response.id;
+		    window.userEvents.push(nev);
+		    window.calendar.updateDisplay();
+		}
+
 	    });
+	    
 	    $('.tooltip').remove();
 	});
 
