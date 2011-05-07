@@ -2,7 +2,7 @@
 // @name           FacebookCalendar
 // @namespace      https://github.com/stothardj/FacebookCalendar
 // @description    Calendar
-// @include        http://www.facebook.com/
+// @include        http://www.facebook.com/*
 // @require http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.min.js
 // @version        0.1
 // ==/UserScript==
@@ -19,6 +19,7 @@
 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 
 // Load facebook api
 var script = document.createElement('script');
@@ -242,9 +243,7 @@ Calendar.prototype.generateDayHtml = function() {
 	    if( window.userEvents != undefined )
 		for( evi in window.userEvents ) {
 		    ev = window.userEvents[evi];
-		    // unsafeWindow.console.log(ev.date_key + ' compared against ' + calendarDayId);
 		    if( ev.date_key == calendarDayId ) {
-			// unsafeWindow.console.log('Same!');
 			bolded = true;
 			break;
 		    }
@@ -271,8 +270,6 @@ Calendar.prototype.generateDayHtml = function() {
 }
 
 Calendar.prototype.updateDisplay = function() {
-    // unsafeWindow.console.log(this.displayMonth);
-    // unsafeWindow.console.log(this.displayYear);
     
     /* Variables that store the previous/next month's date information */
     var prevMonth = (this.displayMonth == 0) ? 11 : (this.displayMonth - 1);
@@ -346,12 +343,8 @@ Calendar.prototype.updateDisplay = function() {
 }
 
 Calendar.prototype.prevMonth = function() {
-    // unsafeWindow.console.log(this);
-
     this.displayYear = (this.displayMonth == 0) ? (this.displayYear - 1) : this.displayYear;
     this.displayMonth = (this.displayMonth == 0) ? 11 : (this.displayMonth - 1);
-
-    // unsafeWindow.console.log(this.updateDisplay);
 
     this.updateDisplay();
 
@@ -359,15 +352,11 @@ Calendar.prototype.prevMonth = function() {
 
 
 Calendar.prototype.nextMonth = function() {
-    unsafeWindow.console.log(this);
     
     this.displayYear = (this.displayMonth == 11) ? (this.displayYear + 1) : this.displayYear;
     this.displayMonth = (this.displayMonth == 11) ? 0 : (this.displayMonth + 1);
 
-    unsafeWindow.console.log(this.updateDisplay);
-
     this.updateDisplay();
-
 
 }
 
@@ -381,9 +370,9 @@ function getMonthLength(numMonth, numYear) {
 
 // Load graphical calendar
 window.calendar = new Calendar();
-$('#pagelet_eventbox').empty();
+// $('#pagelet_eventbox').empty();
 var calendarTable = $('<table id="calendarTable" cellspacing="0"></table>');
-$('#pagelet_eventbox').append(calendarTable);
+$('#pagelet_eventbox').before(calendarTable);
 calendarTable.append('<tr id="calendarHead"><td id="prevMonth">&lt;</td><td id="monthTitle" colspan="5"><h1 id="calendarMonth">' + monthNames[window.calendar.displayMonth] + ' ' + window.calendar.displayYear + '</h1></td><td id="nextMonth">&gt;</td></tr>');
 
 var dayRow = '<tr id="dayRow">';
@@ -394,10 +383,8 @@ dayRow += '</tr>';
 calendarTable.append(dayRow);
 calendarTable.append(calendar.generateDayHtml());
 
-$('#pagelet_eventbox').wrap('<div id="facebook_calendar" />');
+$('#calendarTable').wrap('<div id="facebook_calendar" />');
 
-unsafeWindow.console.log(window.calendar);
-unsafeWindow.console.log(window.calendar.updateDisplay);
 
 $("#prevMonth").click(window.calendar.prevMonth.bind(window.calendar));
 $("#nextMonth").click(window.calendar.nextMonth.bind(window.calendar));
@@ -443,9 +430,9 @@ $('#fbScript').load(function() {
 			var yea = ev.start_date.getFullYear();
 
 			ev.date_key = zeroPad(mon, 2) + zeroPad(day, 2) + zeroPad(yea, 4);
-			unsafeWindow.console.log(ev.date_key);
+
 		    }
-		    // unsafeWindow.console.log(ev.name+ ' ' +ev.start_time);
+
 		}
 		unsafeWindow.console.log('window.calendar is '+window.calendar);
 		if(window.calendar != undefined) {
@@ -618,14 +605,8 @@ $('.dayCell').click(function(e){
 	    var eday = endDate.substr(3,2);
 	    var eyear = endDate.substr(6);
 
-	    unsafeWindow.console.log(startDate);
-	    unsafeWindow.console.log(smonth);
-	    unsafeWindow.console.log(sday);
-	    unsafeWindow.console.log(syear);
 	    var startStr = new Date(syear, smonth - 1, sday).getTime()/1000;
 	    var endStr = new Date(eyear, emonth - 1, eday).getTime()/1000;
-	    unsafeWindow.console.log(startStr);
-	    unsafeWindow.console.log(endStr);
 	    var nev = { name: $('#eventName').val(), start_time: startStr, location: $('#location').val(), end_time: endStr, description: $('#textArea').val()};
 
 	    unsafeWindow.FB.api('/me/events', 'post', nev, function(response) {
@@ -637,7 +618,6 @@ $('.dayCell').click(function(e){
 		    var mon = nev.start_date.getMonth() + 1;
 		    var yea = nev.start_date.getFullYear();
 		    nev.date_key = zeroPad(mon, 2) + zeroPad(day, 2) + zeroPad(yea, 4);
-		    unsafeWindow.console.log("Response eid is "+response.id);
 		    nev.eid = response.id;
 		    window.userEvents.push(nev);
 		    window.calendar.updateDisplay();
@@ -652,11 +632,8 @@ $('.dayCell').click(function(e){
 	    $('.tooltip').remove();
 	});
 
-	unsafeWindow.console.log(e);
 	var defaultDate = e.target.id;
-	unsafeWindow.console.log(defaultDate);
 	var defDate = defaultDate.substr(0,2) + '/' + defaultDate.substr(2,2)  + '/' + defaultDate.substr(4);
-	unsafeWindow.console.log(defDate);
 	$('#startDate').val(defDate);
 	$('#endDate').val(defDate);
 
