@@ -10,18 +10,24 @@
 $('head').append(
 '<style type="text/css"> \
 #facebook_calendar { \
-  color: #0000F0; \
-  border-style: solid; \
+  color: #000000; \
+  border-style: inset; \
   border-width: 1px; \
   border-color: #000000; \
   border-radius: 5px; \
   -moz-border-radius: 5px; \
   padding: 5px; \
-} \
-td.monthTitle { \
+  margin: 5px; \
   text-align: center; \
 } \
-td.dayCell { \
+table#calendarTable { \
+  margin-left: auto; \
+  margin-right: auto; \
+} \
+td#monthTitle { \
+  text-align: center; \
+} \
+td#dayCell { \
   text-align: center; \
 } \
 </style>'
@@ -38,51 +44,129 @@ function Calendar() {
     this.displayYear = this.currDate.getFullYear();
 }
 
-Calendar.prototype = {
-    generateDayHtml: function() {
+Calendar.prototype.generateDayHtml = function() {
+    var indexOfFirstDay = (new Date(this.displayYear, this.displayMonth, 1)).getDay();
+    // Variables that store the previous/next month's date information
+    var prevMonth = (this.displayMonth == 0) ? 11 : (this.displayMonth - 1);
+    var yearPrevMonth = (this.displayMonth == 0) ? (this.displayYear - 1) : this.displayYear;
+    var nextMonth = (this.displayMonth == 11) ? 0 : (this.displayMonth + 1);
+    var yearNextMonth = (this.displayMonth == 11) ? (this.displayYear + 1) : this.displayYear;
+    var lastMonthLen = getMonthLength(prevMonth, yearPrevMonth);
+    var calendarIndex = (indexOfFirstDay == 0) ? (lastMonthLen - 7 + 1) : (lastMonthLen - indexOfFirstDay + 1);
 
-	var indexOfFirstDay = (new Date(this.displayYear, this.displayMonth, 1)).getDay();
-	// Variables that store the previous/next month's date information
-	var prevMonth = (this.displayMonth == 0) ? 11 : (this.displayMonth - 1);
-	var yearPrevMonth = (this.displayMonth == 0) ? (this.displayYear - 1) : this.displayYear;
-	var nextMonth = (this.displayMonth == 11) ? 0 : (this.displayMonth + 1);
-	var yearNextMonth = (this.displayMonth == 11) ? (this.displayYear + 1) : this.displayYear;
-	var lastMonthLen = getMonthLength(prevMonth, yearPrevMonth);
-	var calendarIndex = (indexOfFirstDay == 0) ? (lastMonthLen - 7 + 1) : (lastMonthLen - indexOfFirstDay + 1);
+    var running = '';
+    // Stages:
+    // 0: prevMonth
+    // 1: thisMonth
+    // 2: nextMonth
+    var monthStage = 0;
 
-	var running = '';
-	// Stages:
-	// 0: prevMonth
-	// 1: thisMonth
-	// 2: nextMonth
-	var monthStage = 0;
+    for(var week = 0; week < 6; week++) {
+	running += '<tr id=calendarRow'+week+'>';
+	for(var day in daysOfWeek) {
+	    // Set the ID for the current calendar day
+	    if(monthStage == 0)
+		calendarDayId = zeroPad((prevMonth + 1), 2) + zeroPad(calendarIndex, 2) + zeroPad(yearPrevMonth,4);
+	    else if(monthStage == 1)
+		calendarDayId = zeroPad((this.displayMonth + 1), 2) + zeroPad(calendarIndex, 2) + zeroPad(this.displayYear,4);
+	    else
+		calendarDayId = zeroPad((nextMonth + 1), 2) + zeroPad(calendarIndex, 2) + zeroPad(yearNextMonth,4);
 
-	for(var week = 0; week < 6; week++) {
-	    running += '<tr>';
-	    for(var day in daysOfWeek) {
-		// Set the ID for the current calendar day
-		if(monthStage == 0)
-		    calendarDayId = zeroPad((prevMonth + 1), 2) + zeroPad(calendarIndex, 2) + zeroPad(yearPrevMonth,4);
-		else if(monthStage == 1)
-		    calendarDayId = zeroPad((this.displayMonth + 1), 2) + zeroPad(calendarIndex, 2) + zeroPad(this.displayYear,4);
-		else
-		    calendarDayId = zeroPad((nextMonth + 1), 2) + zeroPad(calendarIndex, 2) + zeroPad(yearNextMonth,4);
-
-		running += '<td id="' + calendarDayId + '" class="dayCell">' + calendarIndex.toString() + '</td>';
-		calendarIndex++;
-		if(monthStage == 0 && calendarIndex > lastMonthLen) {
-		    calendarIndex = 1;
-		    monthStage++;
-		} else if(monthStage == 1 && calendarIndex > getMonthLength(this.displayMonth, this.displayYear)) {
-		    calendarIndex = 1;
-		    monthStage++;
-		}
+	    running += '<td id="' + calendarDayId + '" class="dayCell">' + calendarIndex.toString() + '</td>';
+	    calendarIndex++;
+	    if(monthStage == 0 && calendarIndex > lastMonthLen) {
+		calendarIndex = 1;
+		monthStage++;
+	    } else if(monthStage == 1 && calendarIndex > getMonthLength(this.displayMonth, this.displayYear)) {
+		calendarIndex = 1;
+		monthStage++;
 	    }
-	    running += '</tr>';
 	}
-
-	return running;
+	running += '</tr>';
     }
+
+    return running;
+}
+
+Calendar.prototype.updateDisplay = function() {
+    // unsafeWindow.console.log(this.displayMonth);
+    // unsafeWindow.console.log(this.displayYear);
+    
+    /* Variables that store the previous/next month's date information */
+    var prevMonth = (this.displayMonth == 0) ? 11 : (this.displayMonth - 1);
+    var yearPrevMonth = (this.displayMonth == 0) ? (this.displayYear - 1) : this.displayYear;
+    var nextMonth = (this.displayMonth == 11) ? 0 : (this.displayMonth + 1);
+    var yearNextMonth = (this.displayMonth == 11) ? (this.displayYear + 1) : this.displayYear;
+    
+    var monthTitle = document.getElementById("monthTitle");
+    if(monthTitle.firstChild.nodeType == 3)
+	monthTitle.firstChild.nodeValue = (monthNames[this.displayMonth] + " " + this.displayYear);
+    
+    var lastMonthLen = getMonthLength(prevMonth, yearPrevMonth);
+    var indexOfFirstDay = (new Date(this.displayYear, this.displayMonth, 1)).getDay();
+
+    // If the first day of the month is on Sunday, we want to have one row displaying the entire week from the last month
+    // Otherwise, we want to have the first row contain only a few days from the prev. month and the rest from this month
+    var calendarIndex = (indexOfFirstDay == 0) ? (lastMonthLen - 7 + 1) : (lastMonthLen - indexOfFirstDay + 1);
+    
+    /* monthStage = 0 => last month
+       monthStage = 1 => this month
+       monthStage = 2 => next month */
+    var monthStage = 0;
+    var calendarRow, calendarDay, calendarDayId;
+    for(var i = 0; i < 6; i++){
+	calendarRow = document.getElementById("calendarRow" + i.toString());
+	var calendarRowElems = calendarRow.getElementsByTagName("td");
+	for(var j = 0; j < 7; j++) {
+	    calendarDay = calendarRowElems[j];
+	    if(calendarDay.firstChild.nodeType == 3)
+		calendarDay.firstChild.nodeValue = calendarIndex.toString();
+	    
+	    // Set the ID for the current calendar day
+	    if(monthStage == 0)
+		calendarDayId = zeroPad((prevMonth + 1), 2) + zeroPad(calendarIndex, 2) + zeroPad(yearPrevMonth,4);
+	    else if(monthStage == 1)
+		calendarDayId = zeroPad((this.displayMonth + 1), 2) + zeroPad(calendarIndex, 2) + zeroPad(this.displayYear,4);
+	    else
+		calendarDayId = zeroPad((nextMonth + 1), 2) + zeroPad(calendarIndex, 2) + zeroPad(yearNextMonth,4);
+	    calendarDay.setAttribute("id",calendarDayId);
+	    
+	    calendarIndex++;
+	    if(monthStage == 0 && calendarIndex > lastMonthLen) {
+		calendarIndex = 1;
+		monthStage++;
+	    } else if(monthStage == 1 && calendarIndex > getMonthLength(this.displayMonth, this.displayYear)) {
+		calendarIndex = 1;
+		monthStage++;
+	    }
+	}
+    }
+}
+
+Calendar.prototype.prevMonth = function() {
+    unsafeWindow.console.log(this);
+
+    this.displayYear = (this.displayMonth == 0) ? (this.displayYear - 1) : this.displayYear;
+    this.displayMonth = (this.displayMonth == 0) ? 11 : (this.displayMonth - 1);
+
+    unsafeWindow.console.log(this.updateDisplay);
+
+    this.updateDisplay();
+
+}
+
+
+Calendar.prototype.nextMonth = function() {
+    unsafeWindow.console.log(this);
+    
+    this.displayYear = (this.displayMonth == 11) ? (this.displayYear + 1) : this.displayYear;
+    this.displayMonth = (this.displayMonth == 11) ? 0 : (this.displayMonth + 1);
+
+    unsafeWindow.console.log(this.updateDisplay);
+
+    this.updateDisplay();
+
+
 }
 
 // Works with leap years
@@ -93,12 +177,11 @@ function getMonthLength(numMonth, numYear) {
 	return monthLength[numMonth];
 }
 
-calendar = new Calendar();
-
+window.calendar = new Calendar();
 $('#pagelet_eventbox').empty();
 var calendarTable = $('<table id="calendarTable"></table>');
 $('#pagelet_eventbox').append(calendarTable);
-calendarTable.append('<tr><td id="prevMonth">P</td><td class="monthTitle" colspan="5">' + monthNames[calendar.displayMonth] + ' ' + calendar.displayYear + '</td><td id="nextMonth">N</td></tr>');
+calendarTable.append('<tr><td id="prevMonth">P</td><td id="monthTitle" colspan="5">' + monthNames[window.calendar.displayMonth] + ' ' + window.calendar.displayYear + '</td><td id="nextMonth">N</td></tr>');
 
 var dayRow = '<tr>';
 for(var day in daysOfWeek )
@@ -110,16 +193,11 @@ calendarTable.append(calendar.generateDayHtml());
 
 $('#pagelet_eventbox').wrap('<div id="facebook_calendar" />');
 
+unsafeWindow.console.log(window.calendar);
+unsafeWindow.console.log(window.calendar.updateDisplay);
 
-// $(document).ready(function() {
-//     alert('loaded');
-//     $('a').click(function() {
-// 	alert("Hello");
-//     });
-// });
-		
-$("#prevMonth").click(function() {alert("Prev")});
-$("#nextMonth").click(function() {alert("Next")});
+$("#prevMonth").click(window.calendar.prevMonth.bind(window.calendar));
+$("#nextMonth").click(window.calendar.nextMonth.bind(window.calendar));
 
 // Given a number, num, it returns a string with num and count padded leading zeros
 function zeroPad(num,count) {
