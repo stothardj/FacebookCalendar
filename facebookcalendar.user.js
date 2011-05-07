@@ -8,7 +8,6 @@
 // ==/UserScript==
 
 // Load facebook api
-
 var script = document.createElement('script');
 script.id = 'fbScript';
 script.type = 'text/javascript';
@@ -47,9 +46,11 @@ color: #FFFFFF; \
 } \
 #nextMonth { \
 text-align: center; \
+cursor: pointer; \
 } \
 #prevMonth { \
 text-align: center; \
+cursor: pointer; \
 } \
 td#monthTitle { \
 text-align: center; \
@@ -64,6 +65,7 @@ padding-top: 5px; \
 padding-bottom: 5px; \
 padding-left: 10px; \
 padding-right: 10px; \
+cursor: pointer; \
 } \
 .tooltip { \
 position: absolute; \
@@ -138,8 +140,27 @@ outline: medium none; \
 padding: 1px 0 2px; \
 white-space: nowrap; \
 width: 8em; \
+height: 2em; \
+margin-top: 2px; \
+margin-bottom: 2px; \
+vertical-align: top; \
 background-color: #627AAD; \
 color: white; \
+border: 1px solid #006; \
+} \
+#cancelButton { \
+color: white; \
+width: 8em; \
+height: 2em; \
+vertical-align: top; \
+padding: 1px 0 2px; \
+margin-top: 2px; \
+margin-bottom: 2px; \
+font-family: "Lucida Grande",Tahoma,Verdana,Arial,sans-serif; \
+font-weight: bold; \
+font-size: 12px; \
+background: none repeat scroll 0 0 transparent; \
+background-color: #627AAD; \
 border: 1px solid #006; \
 } \
 .tooltip h1 { \
@@ -562,7 +583,8 @@ $('.dayCell').click(function(e){
 	    + '</select><br />' 
 	    + '<label>Where:</label><input type="text" name="location" id="location" /><br />'
 	    + '<label>Description:</label><textarea name="description" cols="40" rows="5" id="textArea"></textarea><br />'
-	    + '<label>&nbsp; </label><input type="submit" value="Create Event" id=createEventButton />'
+	    + '<label>&nbsp; </label><input type="submit" value="Create Event" id="createEventButton" />'
+	    + '<button type="button" id=cancelButton>Cancel</button>'
 	    + '</form>'
 	    + '</div>';
 	$(tooltipForm)
@@ -613,6 +635,10 @@ $('.dayCell').click(function(e){
 	    $('.tooltip').remove();
 	});
 
+	$('#cancelButton').click(function() {
+	    $('.tooltip').remove();
+	});
+
 	unsafeWindow.console.log(e);
 	var defaultDate = e.target.id;
 	unsafeWindow.console.log(defaultDate);
@@ -643,3 +669,4 @@ function setHover() {
 		$('#eventsList').remove();
 	});
 }
+
