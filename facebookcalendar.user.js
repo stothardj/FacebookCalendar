@@ -452,7 +452,8 @@ $('#fbScript').load(function() {
     });
 });
 
-$('.dayCell').click(function(e){
+
+window.dayClick = function(e){
 
     
     // append a form
@@ -642,27 +643,34 @@ $('.dayCell').click(function(e){
 	$('#endDate').val(defDate);
 
     }
-});
-
-function setHover() {
-	$('.boldedCell').hover(function(e) {
-	
-		var calendarDayId = $(this).attr('id');
-		var eventsList = '<dl id="eventsList">';
-		for( evi in window.userEvents ) {
-		    ev = window.userEvents[evi];
-		    if( ev.date_key == calendarDayId ) {
-				eventsList += ('<dt><a href="http://www.facebook.com/event.php?eid='+ev.eid+'">'+ev.name+"</a></dt>");
-				eventsList += ("<dd>"+((ev.start_date.getHours()%12)+1).toString()+":"+zeroPad(ev.start_date.getMinutes().toString(),2)+"</dd>");
-		    }
-		}
-		eventsList += "</dl>";
-		$(eventsList).appendTo(this).css('top',(e.pageY - 10) + 'px').css('left', (e.pageX + 10) + 'px').fadeIn('slow');
-	}, function() {
-		// Hover out code
-		$('#eventsList').remove();
-	});
 }
+
+$('.dayCell').click(window.dayClick);
+
+    function setHover() {
+	$('.boldedCell').hover(function(e) {
+	    
+	    var calendarDayId = $(this).attr('id');
+	    var eventsList = '<dl id="eventsList">';
+	    for( evi in window.userEvents ) {
+		ev = window.userEvents[evi];
+		if( ev.date_key == calendarDayId ) {
+		    eventsList += ('<dt><a href="http://www.facebook.com/event.php?eid='+ev.eid+'">'+ev.name+"</a></dt>");
+		    var hours = ev.start_date.getHours();
+		    var suff = (hours < 12) ? 'am' : 'pm';
+		    hours = hours % 12;
+		    if( hours == 0 )
+			hours = 12;
+		    eventsList += ("<dd>Start: "+hours.toString()+":"+zeroPad(ev.start_date.getMinutes().toString(),2)+' '+suff+"</dd>");
+		}
+	    }
+	    eventsList += "</dl>";
+	    $(eventsList).appendTo(this).css('top',(e.pageY - 10) + 'px').css('left', (e.pageX + 10) + 'px').fadeIn('slow');
+	}, function() {
+	    // Hover out code
+	    $('#eventsList').remove();
+	});
+    }
 
 $('body').click(function(event) {
 
@@ -670,6 +678,7 @@ $('body').click(function(event) {
 	window.calendar.updateDisplay();
 	$("#prevMonth").click(window.calendar.prevMonth.bind(window.calendar));
 	$("#nextMonth").click(window.calendar.nextMonth.bind(window.calendar));
+	$('.dayCell').click(window.dayClick);
     }
 
     var tooltipExists = $('.tooltip').length;
