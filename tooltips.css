@@ -1,0 +1,91 @@
+.tooltip {
+	display: none;
+	position: absolute;
+	border: 1px solid #333;
+	background-color: #f2f2f2;
+}
+
+.tooltip h1 {
+	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+	font-size: 14px;
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 5px;
+	padding: 5px 5px 5px 5px;
+}
+
+.time {
+	margin-top: 20px;
+	text-align: right;
+	margin: 6px 4px 10px 1px;
+	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+}
+
+#textArea {
+	     resize:none;
+}
+#startDate {
+	width: 100px;
+}
+
+#endDate {
+	width: 100px;
+}
+.tooltip label{
+	display:block;
+	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+	font-weight:bold;
+	text-align:right;
+	width:100px;
+	margin: 2px 4px 6px 4px;
+	float:left;
+}
+
+.tooltip input {
+	float:left;
+	font-size:12px;
+	padding:4px 2px;
+	border:solid 1px #aacfe4;
+	width:200px;
+	margin:2px 10px 5px 10px;
+}
+
+.tooltip textarea {
+	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+	float:left;
+	font-size:12px;
+	padding:4px 2px;
+	border:solid 1px #aacfe4;
+	width:200px;
+	margin:0.5px 0 5px 10px;
+}
+
+.tooltip .small{
+	color:#666666;
+	display:block;
+	font-size:11px;
+	font-weight:normal;
+	text-align:right;
+	width:140px;
+}
+
+.tooltip #createEventButton {
+	background: none repeat scroll 0 0 transparent;
+    cursor: pointer;
+    display: inline-block;
+    font-family: 'Lucida Grande',Tahoma,Verdana,Arial,sans-serif;
+    font-weight: bold;
+    outline: medium none;
+    padding: 1px 0 2px;
+    white-space: nowrap;
+	width: 8em;
+	background-color: #627AAD;
+	color: white;
+	border: 1px solid #006;
+}
+
+.tooltip h1 {
+	background-color: #6D84B4;
+	color: white;
+}
