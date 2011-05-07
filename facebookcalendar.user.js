@@ -569,15 +569,14 @@ $('.dayCell').click(function(e){
 	    unsafeWindow.console.log(smonth);
 	    unsafeWindow.console.log(sday);
 	    unsafeWindow.console.log(syear);
-	    var startStr = new Date(syear, smonth - 1, sday - 1).getTime()/1000;
-	    var endStr = new Date(eyear, emonth - 1, eday - 1).getTime()/1000;
+	    var startStr = new Date(syear, smonth - 1, sday).getTime()/1000;
+	    var endStr = new Date(eyear, emonth - 1, eday).getTime()/1000;
 	    unsafeWindow.console.log(startStr);
 	    unsafeWindow.console.log(endStr);
 	    unsafeWindow.FB.api('/me/events', 'post', { name: $('#eventName').val(), start_time: startStr, location: $('#location').val(), end_time: endStr, description: $('#textArea').val()}, function(response) {
 		unsafeWindow.console.log(response);
 	    });
-
-
+	    $('.tooltip').remove();
 	});
 
 	unsafeWindow.console.log(e);
