@@ -8,7 +8,7 @@
 // ==/UserScript==
 
 $('head').append(
-'<style type="text/css">\
+'<style type="text/css"> \
 #facebook_calendar { \
   color: #0000F0; \
   border-style: solid; \
@@ -16,22 +16,30 @@ $('head').append(
   border-color: #000000; \
   border-radius: 5px; \
   -moz-border-radius: 5px; \
-  padding: 5px;
+  padding: 5px; \
 } \
 </style>'
 );
-$('#pagelet_eventbox').empty();
-var calendarTitle = $('<h1>Facebook Calendar</h1>');
-var calendarMonth = $('<h2>Month</h2>');
-var calendarTable = $(
-'1 2 3 4 5 6 7<br/> \
-8 9 10 11 12 13<br/> \
-14 15 16 17 18 19<br/> \
-20 21 22 23 24 25<br/> \
-26 27 28 29 30 31<br/>'
-);
 
-$('#pagelet_eventbox').append(calendarTitle);
+daysOfWeek = ["S","M","T","W","T","F","S"];
+monthNames = [ "January", "February", "March", "April", "May", "June",
+"July", "August", "September", "October", "November", "December"];
+monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+function Calendar() {
+    this.currDate = new Date();
+    this.displayMonth = this.currDate.getMonth();
+    this.displayYear = this.currDate.getFullYear();
+}
+
+calendar = new Calendar();
+
+$('#pagelet_eventbox').empty();
+var calendarTable = $('<table id="calendarTable"></table>');
+$('#pagelet_eventbox').append(calendarTable);
+calendarTable.append('<tr><td id="prevMonth">P</td><td id="monthTitle">' + monthNames[calendar.displayMonth] + ' ' + calendar.displayYear + '</td><td id="nextMonth">N</td></tr>');
+
 calendarTitle.after(calendarMonth);
 calendarMonth.after(calendarTable);
 $('#pagelet_eventbox').wrap('<div id="facebook_calendar" />');
+
