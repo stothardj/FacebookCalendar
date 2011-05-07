@@ -1,35 +1,7 @@
 $(document).ready(function(){
-	/*
-	$('.location').click(function(e){
-		$(this)
-			.data('tipText', titleText)
-			.removeAttr('title');
-			
-		var tooltipForm = '<form class="tooltip">Event Name: <input type="text" name="eventName" /></form>';
-		$(tooltipForm)
-			.appendTo('body')
-			.css('top', (e.pageY-50) + 'px')
-			.css('left', (e.pageX+20) + 'px')
-			.fadeIn('slow');	
-			
-	});
-	*/
-	/*
-	$('#specialRow').click(
-		var tooltipForm = '<form class="tooltip">Event Name: <input type="text" name="eventName" /></form>';
-		$(tooltipForm)
-			.appendTo('body')
-			.css('top', (e.pageY-50) + 'px')
-			.css('left', (e.pageX+20) + 'px')
-			.fadeIn('slow');
-				//		.text(titleText)
-	);
-	*/
   $('#specialRow').click(function(e){
-	
 	/*
 		append a form
-		
 	*/
 	var tooltipExists = $('.tooltip').length;
 
@@ -38,7 +10,6 @@ $(document).ready(function(){
 	.css('top', (e.pageY-50) + 'px')
 	.css('left', (e.pageX+20) + 'px')
 	.css('background-color', '#ebf4fb');
-	
 	
 	if (tooltipExists > 0) {
 		// tooltip exists
