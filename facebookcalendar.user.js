@@ -7,6 +7,19 @@
 // @version        0.1
 // ==/UserScript==
 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 // Load facebook api
 var script = document.createElement('script');
 script.id = 'fbScript';
@@ -670,3 +683,23 @@ function setHover() {
 	});
 }
 
+$('body').click(function(event) {
+    var tooltipExists = $('.tooltip').length;
+    if(tooltipExists > 0){
+	var elemNode = event.target;
+	var elemNodeName = elemNode.nodeName;
+	var elemClass = $(elemNode).attr('class');
+	var elemID = $(elemNode).attr('id');
+
+	while( elemNodeName != 'HTML'){
+	    if(elemClass == 'tooltip' || elemID == 'calendarTable')
+		break;
+	    elemNode = elemNode.parentNode;
+	    elemNodeName = elemNode.nodeName;
+	    elemClass = $(elemNode).attr('class');
+	    elemID = $(elemNode).attr('id');
+	}
+	if(elemClass!='tooltip' && elemID != 'calendarTable')
+	    $('.tooltip').remove();
+    }
+});
