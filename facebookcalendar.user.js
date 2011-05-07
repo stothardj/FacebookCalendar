@@ -8,6 +8,7 @@
 // ==/UserScript==
 
 // Load facebook api
+
 var script = document.createElement('script');
 script.id = 'fbScript';
 script.type = 'text/javascript';
@@ -52,6 +53,10 @@ h1#calendarMonth { \
 } \
 td#monthTitle { \
   text-align: center; \
+} \
+td.boldedCell { \
+  font-size: 14pt; \
+  font-weight: 900; \
 } \
 td.dayCell { \
   text-align: center; \
@@ -102,7 +107,23 @@ Calendar.prototype.generateDayHtml = function() {
 	    else
 		calendarDayId = zeroPad((nextMonth + 1), 2) + zeroPad(calendarIndex, 2) + zeroPad(yearNextMonth,4);
 
-	    running += '<td id="' + calendarDayId + '" class="dayCell">' + calendarIndex.toString() + '</td>';
+	    var bolded = false;
+	    if( window.userEvents != undefined )
+		for( evi in window.userEvents ) {
+		    ev = window.userEvents[evi];
+		    // unsafeWindow.console.log(ev.date_key + ' compared against ' + calendarDayId);
+		    if( ev.date_key == calendarDayId ) {
+			// unsafeWindow.console.log('Same!');
+			bolded = true;
+			break;
+		    }
+		}
+			
+	    running += '<td id="' + calendarDayId + '" class="dayCell';
+	    if(bolded)
+		running += ' boldedCell';
+	    running += '">' + calendarIndex.toString() + '</td>';
+
 	    calendarIndex++;
 	    if(monthStage == 0 && calendarIndex > lastMonthLen) {
 		calendarIndex = 1;
@@ -158,7 +179,26 @@ Calendar.prototype.updateDisplay = function() {
 		calendarDayId = zeroPad((this.displayMonth + 1), 2) + zeroPad(calendarIndex, 2) + zeroPad(this.displayYear,4);
 	    else
 		calendarDayId = zeroPad((nextMonth + 1), 2) + zeroPad(calendarIndex, 2) + zeroPad(yearNextMonth,4);
+
+	    var bolded = false;
+	    if( window.userEvents != undefined )
+		for( evi in window.userEvents ) {
+		    ev = window.userEvents[evi];
+		    // unsafeWindow.console.log(ev.date_key + ' compared against ' + calendarDayId);
+		    if( ev.date_key == calendarDayId ) {
+			// unsafeWindow.console.log('Same!');
+			bolded = true;
+			break;
+		    }
+		}
+	    else
+		unsafeWindow.console.log( 'window events still not set' );
+
 	    calendarDay.setAttribute("id",calendarDayId);
+
+	    $('#' + calendarDayId).removeClass('boldedCell');
+	    if(bolded)
+		$('#' + calendarDayId).addClass('boldedCell');
 	    
 	    calendarIndex++;
 	    if(monthStage == 0 && calendarIndex > lastMonthLen) {
@@ -173,12 +213,12 @@ Calendar.prototype.updateDisplay = function() {
 }
 
 Calendar.prototype.prevMonth = function() {
-    unsafeWindow.console.log(this);
+    // unsafeWindow.console.log(this);
 
     this.displayYear = (this.displayMonth == 0) ? (this.displayYear - 1) : this.displayYear;
     this.displayMonth = (this.displayMonth == 0) ? 11 : (this.displayMonth - 1);
 
-    unsafeWindow.console.log(this.updateDisplay);
+    // unsafeWindow.console.log(this.updateDisplay);
 
     this.updateDisplay();
 
@@ -206,6 +246,7 @@ function getMonthLength(numMonth, numYear) {
 	return monthLength[numMonth];
 }
 
+// Load graphical calendar
 window.calendar = new Calendar();
 $('#pagelet_eventbox').empty();
 var calendarTable = $('<table id="calendarTable" cellspacing="0"></table>');
@@ -237,6 +278,7 @@ function zeroPad(num,count) {
     return numZeropad;
 }
 
+// Load events
 $('#fbScript').load(function() {
     MY_APP_ID = "224239124259086";
     userSession = null;
@@ -258,8 +300,25 @@ $('#fbScript').load(function() {
 	    userId = userSession.uid;
 	    
 	    unsafeWindow.FB.api({ method: 'events.get' }, function(response) {
-		userEvents = response;
-		unsafeWindow.console.log(userEvents);
+		window.userEvents = response;
+		for(evi in window.userEvents) {
+		    ev = window.userEvents[evi];
+		    if(ev.start_time != undefined) {
+			ev.start_date = new Date(ev.start_time * 1000);
+			var day = ev.start_date.getDay() + 1;
+			var mon = ev.start_date.getMonth() + 1;
+			var yea = ev.start_date.getFullYear();
+			ev.date_key = zeroPad(mon, 2) + zeroPad(day, 2) + zeroPad(yea, 4);
+			unsafeWindow.console.log(ev.date_key);
+		    }
+		    // unsafeWindow.console.log(ev.name+ ' ' +ev.start_time);
+		}
+		unsafeWindow.console.log('window.calendar is '+window.calendar);
+		if(window.calendar != undefined) {
+		    unsafeWindow.console.log("calling update display");
+		    window.calendar.updateDisplay().bind(window.calendar);
+		}
+		unsafeWindow.console.log(window.userEvents);
 	    });
 	    
 	} else {
