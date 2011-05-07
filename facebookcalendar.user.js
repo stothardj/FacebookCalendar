@@ -14,8 +14,6 @@ $('head').append(
   border-style: inset; \
   border-width: 1px; \
   border-color: #000000; \
-  border-radius: 5px; \
-  -moz-border-radius: 5px; \
   padding: 5px; \
   margin: 5px; \
   text-align: center; \
@@ -24,11 +22,31 @@ table#calendarTable { \
   margin-left: auto; \
   margin-right: auto; \
 } \
+tr#calendarHead { \
+  color: #FFFFFF; \
+  background-color: #627aad; \
+} \
+tr#dayRow { \
+  background-color: #F2F2F2; \
+} \
+h1#calendarMonth { \
+  color: #FFFFFF; \
+} \
+#nextMonth { \
+  text-align: center; \
+} \
+#prevMonth { \
+  text-align: center; \
+} \
 td#monthTitle { \
   text-align: center; \
 } \
-td#dayCell { \
+td.dayCell { \
   text-align: center; \
+  padding-top: 5px; \
+  padding-bottom: 5px; \
+  padding-left: 10px; \
+  padding-right: 10px; \
 } \
 </style>'
 );
@@ -179,11 +197,11 @@ function getMonthLength(numMonth, numYear) {
 
 window.calendar = new Calendar();
 $('#pagelet_eventbox').empty();
-var calendarTable = $('<table id="calendarTable"></table>');
+var calendarTable = $('<table id="calendarTable" cellspacing="0"></table>');
 $('#pagelet_eventbox').append(calendarTable);
-calendarTable.append('<tr><td id="prevMonth">P</td><td id="monthTitle" colspan="5">' + monthNames[window.calendar.displayMonth] + ' ' + window.calendar.displayYear + '</td><td id="nextMonth">N</td></tr>');
+calendarTable.append('<tr id="calendarHead"><td id="prevMonth">&lt;</td><td id="monthTitle" colspan="5"><h1 id="calendarMonth">' + monthNames[window.calendar.displayMonth] + ' ' + window.calendar.displayYear + '</h1></td><td id="nextMonth">&gt;</td></tr>');
 
-var dayRow = '<tr>';
+var dayRow = '<tr id="dayRow">';
 for(var day in daysOfWeek )
     dayRow += '<th>' + daysOfWeek[day] + '</th>';
 dayRow += '</tr>';
