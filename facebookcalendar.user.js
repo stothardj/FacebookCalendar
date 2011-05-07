@@ -279,13 +279,16 @@ Calendar.prototype.generateDayHtml = function() {
 }
 
 Calendar.prototype.updateDisplay = function() {
-    
+
+    unsafeWindow.console.log( 'Update display' );
+
     /* Variables that store the previous/next month's date information */
     var prevMonth = (this.displayMonth == 0) ? 11 : (this.displayMonth - 1);
     var yearPrevMonth = (this.displayMonth == 0) ? (this.displayYear - 1) : this.displayYear;
     var nextMonth = (this.displayMonth == 11) ? 0 : (this.displayMonth + 1);
     var yearNextMonth = (this.displayMonth == 11) ? (this.displayYear + 1) : this.displayYear;
-    
+
+    unsafeWindow.console.log( 'General calculations done' );    
 
     $('#monthTitle').html('<h1 id="calendarMonth">' + monthNames[window.calendar.displayMonth] + ' ' + window.calendar.displayYear + '</h1>');
     
@@ -662,6 +665,13 @@ function setHover() {
 }
 
 $('body').click(function(event) {
+
+    if( $("#prevMonth").data('events') == undefined ) {
+	window.calendar.updateDisplay();
+	$("#prevMonth").click(window.calendar.prevMonth.bind(window.calendar));
+	$("#nextMonth").click(window.calendar.nextMonth.bind(window.calendar));
+    }
+
     var tooltipExists = $('.tooltip').length;
     if(tooltipExists > 0){
 	var elemNode = event.target;
